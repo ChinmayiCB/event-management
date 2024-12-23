@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -32,6 +33,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+export const Navbar = () => {
+  return (
+    <nav className="w-full bg-gray-800 p-4 text-white flex justify-between">
+      <div className="text-lg font-bold">Event Manager</div>
+      <div className="space-x-4">
+        <Link to="/" className="hover:underline">
+          Events
+        </Link>
+        <Link to="/attendees" className="hover:underline">
+          Attendees
+        </Link>
+        <Link to="/tasks" className="hover:underline">
+          Tasks
+        </Link>
+      </div>
+    </nav>
+  );
+};
+
 const Events = () => {
   const [events, setEvents] = useState([]);
 
@@ -55,60 +75,67 @@ const Events = () => {
   };
 
   return (
-    <div className="w-screen h-screen p-10">
-      <div className="flex items-center justify-center">
-        <p>Events</p>
-      </div>
-      <AddEventDialog fetchEvents={fetchEvents} />
+    <div className="w-screen h-screen">
+      <Navbar />
+      <div className="p-10">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold">Events</h1>
+          <AddEventDialog fetchEvents={fetchEvents} />
+        </div>
 
-      <Table>
-        <TableCaption>A list of your recent Events</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead className="text-right">Date</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {events.map((event) => (
-            <TableRow key={event.id}>
-              <TableCell>{event.name}</TableCell>
-              <TableCell>{event.desc}</TableCell>
-              <TableCell>{event.loc}</TableCell>
-              <TableCell className="text-right">{event.date}</TableCell>
-              <TableCell>
-                <Dialog>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DialogTrigger asChild>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                      </DialogTrigger>
-                      <DropdownMenuItem
-                        onClick={() => handleDeleteEvent(event.id)}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <EditEventDetails
-                    eventData={event}
-                    fetchEvents={fetchEvents}
-                  />
-                </Dialog>
-              </TableCell>
+        <Table>
+          <TableCaption>A list of your recent Events</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead className="text-right">Date</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {events.map((event) => (
+              <TableRow key={event.id}>
+                <TableCell>{event.name}</TableCell>
+                <TableCell>{event.desc}</TableCell>
+                <TableCell>{event.loc}</TableCell>
+                <TableCell className="text-right">{event.date}</TableCell>
+                <TableCell>
+                  <Dialog>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DialogTrigger asChild>
+                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                        </DialogTrigger>
+                        <DropdownMenuItem
+                          onClick={() => handleDeleteEvent(event.id)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <EditEventDetails
+                      eventData={event}
+                      fetchEvents={fetchEvents}
+                    />
+                  </Dialog>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

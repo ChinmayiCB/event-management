@@ -35,6 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Navbar } from "./Events";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -75,64 +76,71 @@ const Tasks = () => {
   };
 
   return (
-    <div className="w-screen h-screen p-10">
-      <div className="flex items-center justify-center">
-        <p>Tasks</p>
-      </div>
-      <AddTaskDialog
-        fetchTasks={fetchTasks}
-        events={events}
-        attendees={attendees}
-      />
+    <div className="w-screen h-screen ">
+      <Navbar />
+      <div className="p-10">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold">Tasks</h1>
+          <AddTaskDialog
+            fetchTasks={fetchTasks}
+            events={events}
+            attendees={attendees}
+          />
+        </div>
 
-      <Table>
-        <TableCaption>A list of Tasks</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Deadline</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tasks.map((task) => (
-            <TableRow key={task.id}>
-              <TableCell>{task.name}</TableCell>
-              <TableCell>{task.status}</TableCell>
-              <TableCell>{task.deadline}</TableCell>
-              <TableCell>
-                <Dialog>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DialogTrigger asChild>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                      </DialogTrigger>
-                      <DropdownMenuItem
-                        onSelect={() => handleDeleteTask(task.id)}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <EditTaskDialog
-                    taskData={task}
-                    fetchTasks={fetchTasks}
-                    events={events}
-                    attendees={attendees}
-                  />
-                </Dialog>
-              </TableCell>
+        <Table>
+          <TableCaption>A list of Tasks</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Name</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Deadline</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {tasks.map((task) => (
+              <TableRow key={task.id}>
+                <TableCell>{task.name}</TableCell>
+                <TableCell>{task.status}</TableCell>
+                <TableCell>{task.deadline}</TableCell>
+                <TableCell>
+                  <Dialog>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DialogTrigger asChild>
+                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                        </DialogTrigger>
+                        <DropdownMenuItem
+                          onSelect={() => handleDeleteTask(task.id)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <EditTaskDialog
+                      taskData={task}
+                      fetchTasks={fetchTasks}
+                      events={events}
+                      attendees={attendees}
+                    />
+                  </Dialog>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
@@ -152,106 +160,103 @@ const EditTaskDialog = ({ taskData, fetchTasks, events, attendees }) => {
   };
 
   return (
- 
-
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
-        </DialogHeader>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={task.name}
-              onChange={(e) => setTask({ ...task, name: e.target.value })}
-            />
-          </div>
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="status">Status</Label>
-            <Select
-              value={task.status}
-              onValueChange={(value) =>
-                setTask({
-                  ...task,
-                  status: value,
-                })
-              }
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="PENDING">PENDING</SelectItem>
-                <SelectItem value="COMPLETED">COMPLETED</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="deadline">Deadline</Label>
-            <Input
-              id="deadline"
-              type="date"
-              value={task.deadline}
-              onChange={(e) => setTask({ ...task, deadline: e.target.value })}
-            />
-          </div>
-        </div>
-
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Edit Task</DialogTitle>
+      </DialogHeader>
+      <div className="grid grid-cols-2 gap-4">
         <div className="grid w-full items-center gap-1.5">
-          <Label>Events</Label>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            value={task.name}
+            onChange={(e) => setTask({ ...task, name: e.target.value })}
+          />
+        </div>
+        <div className="grid w-full items-center gap-1.5">
+          <Label htmlFor="status">Status</Label>
           <Select
-            value={task.event_id}
+            value={task.status}
             onValueChange={(value) =>
               setTask({
                 ...task,
-                event_id: value,
+                status: value,
               })
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select an event" />
+              <SelectValue placeholder="Select a status" />
             </SelectTrigger>
             <SelectContent>
-              {events.map((event) => (
-                <SelectItem key={event.id} value={event.id}>
-                  {event.name}
-                </SelectItem>
-              ))}
+              <SelectItem value="PENDING">PENDING</SelectItem>
+              <SelectItem value="COMPLETED">COMPLETED</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="grid w-full items-center gap-1.5">
-          <Label>Attendees</Label>
-          <Select
-            value={task.attendee_id}
-            onValueChange={(value) =>
-              setTask({
-                ...task,
-                attendee_id: value,
-              })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select an attendee" />
-            </SelectTrigger>
-            <SelectContent>
-              {attendees.map((attendee) => (
-                <SelectItem key={attendee.id} value={attendee.id}>
-                  {attendee.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="deadline">Deadline</Label>
+          <Input
+            id="deadline"
+            type="date"
+            value={task.deadline}
+            onChange={(e) => setTask({ ...task, deadline: e.target.value })}
+          />
         </div>
+      </div>
 
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button onClick={handleEditTask}>Submit</Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    
+      <div className="grid w-full items-center gap-1.5">
+        <Label>Events</Label>
+        <Select
+          value={task.event_id}
+          onValueChange={(value) =>
+            setTask({
+              ...task,
+              event_id: value,
+            })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select an event" />
+          </SelectTrigger>
+          <SelectContent>
+            {events.map((event) => (
+              <SelectItem key={event.id} value={event.id}>
+                {event.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="grid w-full items-center gap-1.5">
+        <Label>Attendees</Label>
+        <Select
+          value={task.attendee_id}
+          onValueChange={(value) =>
+            setTask({
+              ...task,
+              attendee_id: value,
+            })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select an attendee" />
+          </SelectTrigger>
+          <SelectContent>
+            {attendees.map((attendee) => (
+              <SelectItem key={attendee.id} value={attendee.id}>
+                {attendee.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button onClick={handleEditTask}>Submit</Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
   );
 };
 

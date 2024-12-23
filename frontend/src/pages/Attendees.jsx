@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Navbar } from "./Events";
 
 const Attendees = () => {
   const [attendees, setAttendees] = useState([]);
@@ -69,61 +70,64 @@ const Attendees = () => {
   };
 
   return (
-    <div className="w-screen h-screen p-10">
-      <div className="flex items-center justify-center">
-        <p>Attendees</p>
-      </div>
-      <AddAttendeeDialog fetchAttendees={fetchAttendees} events={events} />
+    <div className="w-screen h-screen ">
+      <Navbar />
+      <div className="p-10">
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold">Attendees</h1>
+          <AddAttendeeDialog fetchAttendees={fetchAttendees} events={events} />
+        </div>
 
-      <Table>
-        <TableCaption>A list of Attendees</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {attendees &&
-            attendees.map((attendee) => (
-              <TableRow key={attendee.id}>
-                <TableCell>{attendee.name}</TableCell>
-                <TableCell>{attendee.email}</TableCell>
-                <TableCell>
-                  <Dialog>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-haspopup="true"
-                          size="icon"
-                          variant="ghost"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DialogTrigger asChild>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                        </DialogTrigger>
-                        <DropdownMenuItem
-                          onSelect={() => handleDeleteAttendee(attendee.id)}
-                        >
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                    <EditAttendeeDetails
-                      attendeeData={attendee}
-                      fetchAttendees={fetchAttendees}
-                    />
-                  </Dialog>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+        <Table>
+          <TableCaption>A list of Attendees</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {attendees &&
+              attendees.map((attendee) => (
+                <TableRow key={attendee.id}>
+                  <TableCell>{attendee.name}</TableCell>
+                  <TableCell>{attendee.email}</TableCell>
+                  <TableCell>
+                    <Dialog>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DialogTrigger asChild>
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                          </DialogTrigger>
+                          <DropdownMenuItem
+                            onSelect={() => handleDeleteAttendee(attendee.id)}
+                          >
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <EditAttendeeDetails
+                        attendeeData={attendee}
+                        fetchAttendees={fetchAttendees}
+                      />
+                    </Dialog>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
